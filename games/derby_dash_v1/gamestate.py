@@ -34,6 +34,19 @@ class GameState(GameStateOverride):
         self.win_manager.update_spinwin(mult)
         self.win_manager.update_gametype_wins(self.gametype)
 
+    def update_final_win(self):
+        """Serialize rounded SDK book totals without rounding Derby's internal math."""
+        final=round(min(self.win_manager.running_bet_win,self.config.wincap),2)
+        base=round(min(self.win_manager.basegame_wins,self.config.wincap),2)
+        # Rounding base/free independently can differ from rounded total by 0.01.
+        # Reconcile the book split to the authoritative rounded round total.
+        free=round(final-base,2)
+        self.final_win=final
+        self.book.payout_multiplier=final
+        self.book.basegame_wins=base
+        self.book.freegame_wins=free
+        assert round(self.book.basegame_wins+self.book.freegame_wins,2)==final
+
     def run_spin(self,sim,simulation_seed=None):
         self.reset_seed(sim,simulation_seed)
         self.repeat=True
