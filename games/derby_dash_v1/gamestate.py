@@ -45,7 +45,7 @@ class GameState(GameStateOverride):
                 self.tot_fs=self.config.starting_free_spins
                 self.triggered_freegame=True
                 fs_trigger_event(self,include_padding_index=False,basegame_trigger=True,freegame_trigger=False)
-                self.run_freespin()
+                # Free-game accounting must use the SDK free-game mode.\n                self.gametype=self.config.freegame_type\n                self.run_freespin()
             self.update_final_win()
             self.check_repeat()
         self.imprint_wins()
