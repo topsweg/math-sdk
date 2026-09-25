@@ -28,9 +28,30 @@ class GameState(GameStateOverride):
         mult=random.choices([x[0] for x in self.config.final_stretch],
                             weights=[x[1] for x in self.config.final_stretch],k=1)[0]
         runners=["Midnight Royale","Golden Gallop","Silver Comet"]
-        winner=random.choice(runners)
+        winner_index=random.randrange(len(runners))
+        winner=runners[winner_index]
+
+        # Frozen v0.35 presentation contract: the winning runner shows the actual
+        # award; the other two show distinct alternatives excluding that award.
+        all_prizes=[x[0] for x in self.config.final_stretch]
+        alternatives=[x for x in all_prizes if x != mult]
+        other_prizes=random.sample(alternatives,2)
+        prizes=[None]*len(runners)
+        prizes[winner_index]=mult
+        other_indexes=[i for i in range(len(runners)) if i != winner_index]
+        prizes[other_indexes[0]]=other_prizes[0]
+        prizes[other_indexes[1]]=other_prizes[1]
+
         self.final_stretch_multiplier=mult
-        self.add_derby_event("finalStretch",runners=runners,winner=winner,multiplier=mult,win=mult)
+        self.add_derby_event(
+            "finalStretch",
+            runners=runners,
+            winner=winner,
+            winnerIndex=winner_index,
+            multiplier=mult,
+            win=mult,
+            prizes=prizes,
+        )
         self.win_manager.update_spinwin(mult)
         self.win_manager.update_gametype_wins(self.gametype)
 
