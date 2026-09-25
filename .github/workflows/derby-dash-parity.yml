@@ -17,9 +17,9 @@ jobs:
           python-version: "3.12"
       - name: Install SDK dependencies
         run: pip install -r requirements.txt
-      - name: Run 1M paid / 100k buy parity simulation
+      - name: Run 3M paid / 300k buy parity simulation
         working-directory: games/derby_dash_v1
-        run: PYTHONPATH=../.. python parity_sim.py | tee parity-results.txt
+        run: PYTHONPATH=../.. python -c 'from parity_sim import main; main(3_000_000,300_000)' | tee parity-results.txt
       - name: Upload parity results
         uses: actions/upload-artifact@v4
         with:
