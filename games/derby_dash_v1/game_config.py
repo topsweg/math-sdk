@@ -40,8 +40,11 @@ class GameConfig(Config):
         }
         self.anticipation_triggers={self.basegame_type:2,self.freegame_type:2}
 
-        base_condition={"force_wincap":False,"force_freegame":False}
-        feature_condition={"force_wincap":False,"force_freegame":True}
+        # Weighted-board GameState does not consume SDK reel strips, but Distribution
+        # requires reel_weights. Keep a sentinel id here for SDK contract compliance.
+        base_condition={"reel_weights":{self.basegame_type:{"WEIGHTED":1}},"force_wincap":False,"force_freegame":False}
+        feature_condition={"reel_weights":{self.basegame_type:{"WEIGHTED":1},self.freegame_type:{"WEIGHTED":1}},
+                           "scatter_triggers":{3:1},"force_wincap":False,"force_freegame":True}
         self.bet_modes=[
             BetMode(name="base",cost=1.0,rtp=self.rtp,max_win=self.wincap,
                 auto_close_disabled=False,is_feature=True,is_buybonus=False,
