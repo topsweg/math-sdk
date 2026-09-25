@@ -23,6 +23,8 @@ class GameState(GameStateOverride):
         return self.count_special_symbols("scatter")>=3
 
     def _final_stretch(self):
+        # Final Stretch is a separate feature award, not part of the last free-spin reveal.
+        self.win_manager.reset_spin_win()
         mult=random.choices([x[0] for x in self.config.final_stretch],
                             weights=[x[1] for x in self.config.final_stretch],k=1)[0]
         runners=["Midnight Royale","Golden Gallop","Silver Comet"]
