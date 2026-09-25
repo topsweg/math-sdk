@@ -184,7 +184,7 @@ class GeneralGameState(ABC):
                 }
         self.temp_wins = []
         self.library[self.sim + 1] = copy(self.book.to_json())
-        self._payout_ints.append(int(self.library[self.sim + 1]["payoutMultiplier"]))
+        self._payout_ints.append(self.library[self.sim + 1]["payoutMultiplier"])
         self.win_manager.update_end_round_wins()
 
     def update_final_win(self) -> None:
