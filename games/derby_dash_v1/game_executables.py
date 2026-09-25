@@ -64,6 +64,6 @@ class GameExecutables(Board):
 
         # Current SDK Ways emitter references a legacy evaluate_wincap hook.
         if self.win_manager.spin_win > 0:
-            win_info_event(self)
+            win_info_event(self, include_padding_index=False)
             set_win_event(self)
         set_total_event(self)
