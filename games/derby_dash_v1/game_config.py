@@ -51,8 +51,8 @@ class GameConfig(Config):
             BetMode(name="base",cost=1.0,rtp=self.rtp,max_win=self.wincap,
                 auto_close_disabled=False,is_feature=True,is_buybonus=False,
                 distributions=[
-                    Distribution(criteria="freegame",quota=0.01,conditions=feature_condition),
-                    Distribution(criteria="basegame",quota=0.99,conditions=base_condition),
+                    Distribution(criteria="freegame",quota=0.0035714285714285713,conditions=feature_condition),
+                    Distribution(criteria="basegame",quota=0.9964285714285714,conditions=base_condition),
                 ]),
             BetMode(name="bonus",cost=self.bonus_buy_cost,rtp=self.rtp,max_win=self.wincap,
                 auto_close_disabled=False,is_feature=False,is_buybonus=True,
