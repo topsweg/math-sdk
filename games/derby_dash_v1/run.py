@@ -9,6 +9,6 @@ if __name__=="__main__":
     config=GameConfig()
     gamestate=GameState(config)
     num_sim_args={"base":1000,"bonus":1000}
-    create_books(gamestate,config,num_sim_args,batching_size=500,num_threads=1,compression=False,profiling=False)
+    create_books(gamestate, config, num_sim_args, 500, 1, False, False)
     generate_configs(gamestate)
     execute_all_tests(config)
