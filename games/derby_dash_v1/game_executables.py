@@ -16,4 +16,4 @@ class GameExecutables(Board):
         self.win_data["totalWin"]=round(sum(w["win"] for w in self.win_data["wins"]),2)
         Ways.record_ways_wins(self)
         self.win_manager.update_spinwin(self.win_data["totalWin"])
-        Ways.emit_wayswin_events(self)
+        # Current SDK Ways emitter references a legacy evaluate_wincap hook that\n        # is not present on GeneralGameState. Emit the native win events here.\n        if self.win_manager.spin_win > 0:\n            win_info_event(self)\n            set_win_event(self)\n        set_total_event(self)
