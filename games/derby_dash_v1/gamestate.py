@@ -37,15 +37,31 @@ class GameState(GameStateOverride):
         self.repeat=True
         while self.repeat:
             self.reset_book()
-            self.gametype=self.config.basegame_type
-            self.draw_weighted_board(False)
-            self.evaluate_ways_board()
-            self.win_manager.update_gametype_wins(self.gametype)
-            if self.check_trophy_trigger():
+
+            # v0.35 Bonus Buy enters Winner's Circle directly: no base board,
+            # no natural-trigger fishing, 10 starting free spins.
+            if self.get_current_betmode().get_buybonus():
                 self.tot_fs=self.config.starting_free_spins
                 self.triggered_freegame=True
-                fs_trigger_event(self,include_padding_index=False,basegame_trigger=True,freegame_trigger=False)
-                # Free-game accounting must use the SDK free-game mode.\n                self.gametype=self.config.freegame_type\n                self.run_freespin()
+                self.gametype=self.config.freegame_type
+                self.run_freespin()
+            else:
+                self.gametype=self.config.basegame_type
+                self.draw_weighted_board(False)
+                self.evaluate_ways_board()
+                self.win_manager.update_gametype_wins(self.gametype)
+                if self.check_trophy_trigger():
+                    self.tot_fs=self.config.starting_free_spins
+                    self.triggered_freegame=True
+                    fs_trigger_event(
+                        self,
+                        include_padding_index=False,
+                        basegame_trigger=True,
+                        freegame_trigger=False,
+                    )
+                    self.gametype=self.config.freegame_type
+                    self.run_freespin()
+
             self.update_final_win()
             self.check_repeat()
         self.imprint_wins()
