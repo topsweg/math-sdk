@@ -2,8 +2,26 @@
 import random
 from game_override import GameStateOverride
 from src.events.events import fs_trigger_event, update_freespin_event, freespin_end_event, final_win_event
+from src.state.books import Book
+
+class DerbyBook(Book):
+    """Derby-specific RGS serialization; leave the shared SDK Book contract untouched."""
+    def to_json(self):
+        data=super().to_json()
+        data["payoutMultiplier"]=int(round(self.payout_multiplier*10,0)*10)
+        return data
 
 class GameState(GameStateOverride):
+    def reset_book(self):
+        """Use Derby's 0.1x RGS payout quantization only for Derby books."""
+        super().reset_book()
+        derby_book=DerbyBook(self.book.id,self.book.criteria)
+        derby_book.events=self.book.events
+        derby_book.payout_multiplier=self.book.payout_multiplier
+        derby_book.basegame_wins=self.book.basegame_wins
+        derby_book.freegame_wins=self.book.freegame_wins
+        self.book=derby_book
+
     def _weighted_symbol(self,weights):
         names=list(weights); vals=list(weights.values())
         return random.choices(names,weights=vals,k=1)[0]
