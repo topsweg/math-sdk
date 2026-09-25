@@ -1,0 +1,21 @@
+name: Derby Dash SDK smoke test
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [derby-dash-v1]
+jobs:
+  derby-dash-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install SDK dependencies
+        run: pip install -r requirements.txt
+      - name: Config smoke test
+        working-directory: games/derby_dash_v1
+        run: PYTHONPATH=../.. python smoke_test.py
+      - name: Compile Derby Dash Python
+        run: python -m py_compile games/derby_dash_v1/*.py
