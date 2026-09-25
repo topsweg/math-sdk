@@ -27,7 +27,7 @@ class GameConfig(Config):
         self.pay_scale=1.3595694474
         self.bonus_win_multiplier=5.0674552348
         self.bonus_buy_cost=100.0
-        self.starting_free_spins=10
+        # Frozen v0.35 Trophy raw pays; 5 means 5-or-more scatters.\n        self.scatter_raw_pay={3:8.788,4:35.152,5:109.902}\n        self.starting_free_spins=10
         self.retrigger_free_spins=5
         self.final_stretch=((25,.35),(35,.30),(50,.20),(75,.10),(115,.04),(265,.01))
 
