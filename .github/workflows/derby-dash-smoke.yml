@@ -19,3 +19,15 @@ jobs:
         run: PYTHONPATH=../.. python smoke_test.py
       - name: Compile Derby Dash Python
         run: python -m py_compile games/derby_dash_v1/*.py
+      - name: Generate Derby Dash sample books
+        working-directory: games/derby_dash_v1
+        run: PYTHONPATH=../.. python run.py
+      - name: Upload Derby Dash books
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: derby-dash-sample-books
+          path: |
+            games/derby_dash_v1/library/
+            games/derby_dash_v1/output/
+          if-no-files-found: warn
