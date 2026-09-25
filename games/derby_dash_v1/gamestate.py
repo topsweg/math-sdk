@@ -46,7 +46,7 @@ class GameState(GameStateOverride):
                 self.triggered_freegame=True
                 fs_trigger_event(self,include_padding_index=False,basegame_trigger=True,freegame_trigger=False)
                 self.run_freespin()
-            self.evaluate_finalwin()
+            self.update_final_win()
             self.check_repeat()
         self.imprint_wins()
 
