@@ -32,7 +32,7 @@ class GameConfig(Config):
         self.final_stretch=((25,.35),(35,.30),(50,.20),(75,.10),(115,.04),(265,.01))
 
         # SDK symbol registration. Exact ways payouts are evaluated in Derby Dash GameState.
-        self.paytable={(3,s):0.0 for s in ("W","G","SIL","TH","RF","A","K","Q","J")}
+        self.paytable={(3,"G"):0.5273,(4,"G"):1.3182,(5,"G"):3.7355,(3,"SIL"):0.4394,(4,"SIL"):1.0990,(5,"SIL"):2.8567,(3,"TH"):0.3515,(4,"TH"):0.8788,(5,"TH"):2.2849,(3,"RF"):0.3081,(4,"RF"):0.7475,(5,"RF"):1.8455,(3,"A"):0.1980,(4,"A"):0.4394,(5,"A"):1.0546,(3,"K"):0.1758,(4,"K"):0.3960,(5,"K"):0.8788,(3,"Q"):0.1535,(4,"Q"):0.3515,(5,"Q"):0.7909,(3,"J"):0.1323,(4,"J"):0.3081,(5,"J"):0.6596}
         self.special_symbols={"wild":["W"],"scatter":["T"]}
         self.freespin_triggers={
             self.basegame_type:{3:10,4:10,5:10},
