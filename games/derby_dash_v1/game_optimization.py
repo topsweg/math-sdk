@@ -7,7 +7,7 @@ class OptimizationSetup:
         self.game_config.opt_params={
             "base":{
                 "conditions":{
-                    "freegame":ConstructConditions(rtp=0.342,hr=280,search_conditions={"symbol":"scatter"}).return_dict(),
+                    "freegame":ConstructConditions(rtp=0.342,hr=280).return_dict(),
                     "basegame":ConstructConditions(rtp=0.618,av_win=1.0).return_dict(),
                 },
                 "scaling":{},
