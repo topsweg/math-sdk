@@ -64,7 +64,11 @@ class GameState(GameStateOverride):
         # Keep the race award deterministic here; the pick is carried as
         # presentation metadata until an RGS-supported choice contract exists.
         race_total=purse*mult
-        target_total=race_total
+        # The configured win cap applies to the complete wager. Natural
+        # features may already have a base-game win, so only the remaining
+        # cap headroom is available to Winner's Circle.
+        cap_headroom=max(0.0,self.config.wincap-self.win_manager.basegame_wins)
+        target_total=min(race_total,cap_headroom)
         incremental=max(0.0,target_total-purse)
 
         self.final_stretch_multiplier=mult
@@ -72,7 +76,9 @@ class GameState(GameStateOverride):
             "finalStretch",
             runners=runners,winner=winner,winnerIndex=winner_index,
             multiplier=mult,prizes=prizes,purse=purse,
-            raceTotal=race_total,perfectPickRate=self.config.perfect_pick_bonus,
+            raceTotal=race_total,cappedRaceTotal=target_total,
+            winCap=self.config.wincap,capApplied=(race_total>target_total),
+            perfectPickRate=self.config.perfect_pick_bonus,
             perfectPickCreditsEnabled=False,totalAfterRace=target_total,
         )
         self.win_manager.reset_spin_win()
