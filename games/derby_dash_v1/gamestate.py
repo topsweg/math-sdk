@@ -129,6 +129,10 @@ class GameState(GameStateOverride):
                     self.run_freespin()
 
             self.update_final_win()
+            # Expose the generated distribution criterion to the optimizer's
+            # force records. This lets the base LUT keep natural-feature books
+            # separate from ordinary base books without changing game math.
+            self.record({"distribution": self.criteria})
             self.check_repeat()
         self.imprint_wins()
 
