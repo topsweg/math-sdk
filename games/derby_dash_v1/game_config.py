@@ -32,9 +32,9 @@ class GameConfig(Config):
         self.starting_free_spins=10
         self.retrigger_free_spins=5
         # Final Stretch v2: multiplier applies to the accumulated free-spin purse.
-        # Mean = 1.85x, tuned from the validated free-spin purse mean (~52x)
+        # Mean = 1.843x, tuned from a 300k-feature seeded simulation (mean purse ~52.09x)
         # to preserve an approximately 96x feature before full production validation.
-        self.final_stretch=((1,.50),(2,.30),(3,.15),(5,.04),(10,.01))
+        self.final_stretch=((1,.507),(2,.293),(3,.15),(5,.04),(10,.01))
         self.perfect_pick_bonus=0.10
 
         # SDK symbol registration. Exact ways payouts are evaluated in Derby Dash GameState.
