@@ -41,36 +41,43 @@ class GameState(GameStateOverride):
         return self.count_special_symbols("scatter")>=3
 
     def _final_stretch(self):
-        # Final Stretch is a separate feature award, not part of the last free-spin reveal.
-        self.win_manager.reset_spin_win()
+        """Final Stretch v2: race multiplier applies to the entire free-spin purse."""
+        # Capture the accumulated Winner's Circle winnings before the race award.
+        purse=max(0.0, self.win_manager.freegame_wins)
         mult=random.choices([x[0] for x in self.config.final_stretch],
                             weights=[x[1] for x in self.config.final_stretch],k=1)[0]
         runners=["Midnight Royale","Golden Gallop","Silver Comet"]
         winner_index=random.randrange(len(runners))
         winner=runners[winner_index]
 
-        # Frozen v0.35 presentation contract: the winning runner shows the actual
-        # award; the other two show distinct alternatives excluding that award.
-        all_prizes=[x[0] for x in self.config.final_stretch]
-        alternatives=[x for x in all_prizes if x != mult]
+        # Every runner carries a visible multiplier before the gates open.
+        alternatives=[x[0] for x in self.config.final_stretch if x[0] != mult]
         other_prizes=random.sample(alternatives,2)
-        prizes=[None]*len(runners)
+        prizes=[None]*3
         prizes[winner_index]=mult
-        other_indexes=[i for i in range(len(runners)) if i != winner_index]
+        other_indexes=[i for i in range(3) if i != winner_index]
         prizes[other_indexes[0]]=other_prizes[0]
         prizes[other_indexes[1]]=other_prizes[1]
+
+        # A player pick is presentation/input data at runtime. Static math books
+        # expose the deterministic winner and the 10% rule; the RGS payout uses
+        # the expected random-pick contribution so client input never changes
+        # which deterministic outcome was selected.
+        race_total=purse*mult
+        expected_pick_bonus=purse*self.config.perfect_pick_bonus/3.0
+        target_total=race_total+expected_pick_bonus
+        incremental=max(0.0,target_total-purse)
 
         self.final_stretch_multiplier=mult
         self.add_derby_event(
             "finalStretch",
-            runners=runners,
-            winner=winner,
-            winnerIndex=winner_index,
-            multiplier=mult,
-            win=mult,
-            prizes=prizes,
+            runners=runners,winner=winner,winnerIndex=winner_index,
+            multiplier=mult,prizes=prizes,purse=purse,
+            raceTotal=race_total,perfectPickRate=self.config.perfect_pick_bonus,
+            expectedPickBonus=expected_pick_bonus,totalAfterRace=target_total,
         )
-        self.win_manager.update_spinwin(mult)
+        self.win_manager.reset_spin_win()
+        self.win_manager.update_spinwin(incremental)
         self.win_manager.update_gametype_wins(self.gametype)
 
     def update_final_win(self):
