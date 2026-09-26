@@ -19,6 +19,9 @@ jobs:
         run: PYTHONPATH=../.. python smoke_test.py
       - name: Compile Derby Dash Python
         run: python -m py_compile games/derby_dash_v1/*.py
+      - name: Full Derby Dash v2 parity validation
+        working-directory: games/derby_dash_v1
+        run: PYTHONPATH=../.. python parity_sim.py
       - name: Generate Derby Dash sample books
         working-directory: games/derby_dash_v1
         run: PYTHONPATH=../.. python run.py
