@@ -1,0 +1,28 @@
+name: Derby Dash publish math
+on:
+  push:
+    branches: [derby-dash-v1]
+    paths:
+      - games/derby_dash_v1/production_run.py
+      - games/derby_dash_v1/game_optimization.py
+      - .github/workflows/derby-dash-publish.yml
+  workflow_dispatch:
+jobs:
+  publish-math:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install SDK dependencies
+        run: pip install -r requirements.txt
+      - name: Generate and optimize publish math
+        working-directory: games/derby_dash_v1
+        run: PYTHONPATH=../.. python production_run.py
+      - name: Upload publish math
+        uses: actions/upload-artifact@v4
+        with:
+          name: derby-dash-math-publish
+          path: games/derby_dash_v1/library/publish_files/
+          if-no-files-found: error

@@ -1,0 +1,32 @@
+name: Derby Dash parity simulation
+on:
+  workflow_dispatch:
+  push:
+    branches: [derby-dash-v1]
+    paths:
+      - "games/derby_dash_v1/parity_sim.py"
+      - ".github/workflows/derby-dash-parity.yml"
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install SDK dependencies
+        run: pip install -r requirements.txt
+      - name: Run exact analytical parity checks
+        working-directory: games/derby_dash_v1
+        run: PYTHONPATH=../.. python analytical_parity.py | tee analytical-results.txt
+      - name: Run 3M paid / 300k buy parity simulation
+        working-directory: games/derby_dash_v1
+        run: PYTHONPATH=../.. python -c 'from parity_sim import main; main(3_000_000,300_000)' | tee parity-results.txt
+      - name: Upload parity results
+        uses: actions/upload-artifact@v4
+        with:
+          name: derby-dash-parity-results
+          path: |
+            games/derby_dash_v1/parity-results.txt
+            games/derby_dash_v1/analytical-results.txt

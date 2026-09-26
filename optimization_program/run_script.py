@@ -58,11 +58,16 @@ class OptimizationExecution:
             stderr=subprocess.PIPE,
             text=True,
             cwd=OPTIMIZATION_PATH,
-            check=True,
+            check=False,
             env={**os.environ, "PATH": updated_path},
         )
-        if result.returncode == 0:
+        # Always surface Rust diagnostics in CI; CalledProcessError otherwise
+        # hides the captured stderr that explains an optimizer failure.
+        if result.stdout:
             print(result.stdout)
-        else:
-            print("Error in optimization program.")
+        if result.stderr:
             print(result.stderr)
+        if result.returncode != 0:
+            raise subprocess.CalledProcessError(
+                result.returncode, result.args, output=result.stdout, stderr=result.stderr
+            )
