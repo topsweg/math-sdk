@@ -30,18 +30,19 @@ def bonus():
         w,sc=evaluate(grid(C.free_weights),True); win+=w
         if sc>=3: left+=C.retrigger_free_spins; retr+=1
     return win*finish(),played,retr
-def main(base_n=1_000_000,buy_n=100_000,seed=350035):
+def main(base_n=3_000_000,buy_n=300_000,seed=350035):
     random.seed(seed); paid=base=feature=0.0; triggers=hits=teases=0; feature_spins=feature_retr=0
+    max_paid=0.0; max_feature=0.0
     for _ in range(base_n):
         g=grid(C.base_weights); w,sc=evaluate(g); base+=w; hits+=w>0
         teases+=sum(x=="T" for reel in g[:4] for x in reel)>=2
         bw=0.0
         if sc>=3:
             triggers+=1; bw,sp,rt=bonus(); feature+=bw; feature_spins+=sp; feature_retr+=rt
-        paid+=w+bw
-    buy=0.0; buy_spins=buy_retr=0
+        round_win=w+bw; paid+=round_win; max_paid=max(max_paid,round_win); max_feature=max(max_feature,bw)
+    buy=0.0; buy_spins=buy_retr=0; max_buy=0.0
     for _ in range(buy_n):
-        w,sp,rt=bonus(); buy+=w; buy_spins+=sp; buy_retr+=rt
+        w,sp,rt=bonus(); buy+=w; max_buy=max(max_buy,w); buy_spins+=sp; buy_retr+=rt
     print("DERBY DASH FINAL STRETCH v2 PARITY")
     print(f"paid_rounds={base_n:,} bonus_buys={buy_n:,}")
     print(f"paid_rtp={paid/base_n:.6%}"); print(f"base_rtp={base/base_n:.6%}")
@@ -54,4 +55,7 @@ def main(base_n=1_000_000,buy_n=100_000,seed=350035):
     print(f"bonus_buy_rtp={buy/(buy_n*C.bonus_buy_cost):.6%}")
     print(f"avg_bonus_buy={buy/buy_n:.6f}x"); print(f"avg_buy_fs_length={buy_spins/buy_n:.6f}")
     print(f"retriggers_per_buy={buy_retr/buy_n:.6f}")
+    print(f"final_stretch_mean={C.final_stretch_mean():.6f}x")
+    print(f"max_paid_round={max_paid:.6f}x"); print(f"max_natural_feature={max_feature:.6f}x")
+    print(f"max_bonus_buy={max_buy:.6f}x")
 if __name__=="__main__": main()
