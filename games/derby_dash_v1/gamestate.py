@@ -59,13 +59,12 @@ class GameState(GameStateOverride):
         prizes[other_indexes[0]]=other_prizes[0]
         prizes[other_indexes[1]]=other_prizes[1]
 
-        # A player pick is presentation/input data at runtime. Static math books
-        # expose the deterministic winner and the 10% rule; the RGS payout uses
-        # the expected random-pick contribution so client input never changes
-        # which deterministic outcome was selected.
+        # The RGS chooses the complete deterministic book when the wager is
+        # placed. A later UI horse pick therefore cannot safely alter credits.
+        # Keep the race award deterministic here; the pick is carried as
+        # presentation metadata until an RGS-supported choice contract exists.
         race_total=purse*mult
-        expected_pick_bonus=purse*self.config.perfect_pick_bonus/3.0
-        target_total=race_total+expected_pick_bonus
+        target_total=race_total
         incremental=max(0.0,target_total-purse)
 
         self.final_stretch_multiplier=mult
@@ -74,7 +73,7 @@ class GameState(GameStateOverride):
             runners=runners,winner=winner,winnerIndex=winner_index,
             multiplier=mult,prizes=prizes,purse=purse,
             raceTotal=race_total,perfectPickRate=self.config.perfect_pick_bonus,
-            expectedPickBonus=expected_pick_bonus,totalAfterRace=target_total,
+            perfectPickCreditsEnabled=False,totalAfterRace=target_total,
         )
         self.win_manager.reset_spin_win()
         self.win_manager.update_spinwin(incremental)
