@@ -1,4 +1,4 @@
-"""Large Derby Dash v0.35 parity simulation, independent of SDK forcing."""
+"""Large Derby Dash parity simulation for Final Stretch purse-multiplier math, independent of SDK forcing."""
 import random
 from game_config import GameConfig
 C=GameConfig(); SYMS=list(C.base_weights); PAY=C.paytable
@@ -29,7 +29,7 @@ def bonus():
         left-=1; played+=1
         w,sc=evaluate(grid(C.free_weights),True); win+=w
         if sc>=3: left+=C.retrigger_free_spins; retr+=1
-    return win+finish(),played,retr
+    return win*finish(),played,retr
 def main(base_n=1_000_000,buy_n=100_000,seed=350035):
     random.seed(seed); paid=base=feature=0.0; triggers=hits=teases=0; feature_spins=feature_retr=0
     for _ in range(base_n):
@@ -42,7 +42,7 @@ def main(base_n=1_000_000,buy_n=100_000,seed=350035):
     buy=0.0; buy_spins=buy_retr=0
     for _ in range(buy_n):
         w,sp,rt=bonus(); buy+=w; buy_spins+=sp; buy_retr+=rt
-    print("DERBY DASH v0.35 PARITY")
+    print("DERBY DASH FINAL STRETCH v2 PARITY")
     print(f"paid_rounds={base_n:,} bonus_buys={buy_n:,}")
     print(f"paid_rtp={paid/base_n:.6%}"); print(f"base_rtp={base/base_n:.6%}")
     print(f"natural_feature_rtp={feature/base_n:.6%}"); print(f"hit_rate={hits/base_n:.6%}")
