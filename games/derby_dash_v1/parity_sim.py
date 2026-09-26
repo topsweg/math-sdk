@@ -29,7 +29,7 @@ def bonus():
         left-=1; played+=1
         w,sc=evaluate(grid(C.free_weights),True); win+=w
         if sc>=3: left+=C.retrigger_free_spins; retr+=1
-    return win*finish(),played,retr
+    return min(win*finish(),C.wincap),played,retr
 def main(base_n=3_000_000,buy_n=300_000,seed=350035):
     random.seed(seed); paid=base=feature=0.0; triggers=hits=teases=0; feature_spins=feature_retr=0
     max_paid=0.0; max_feature=0.0
@@ -39,7 +39,7 @@ def main(base_n=3_000_000,buy_n=300_000,seed=350035):
         bw=0.0
         if sc>=3:
             triggers+=1; bw,sp,rt=bonus(); feature+=bw; feature_spins+=sp; feature_retr+=rt
-        round_win=w+bw; paid+=round_win; max_paid=max(max_paid,round_win); max_feature=max(max_feature,bw)
+        round_win=min(w+bw,C.wincap); paid+=round_win; max_paid=max(max_paid,round_win); max_feature=max(max_feature,min(bw,max(0.0,C.wincap-w)))
     buy=0.0; buy_spins=buy_retr=0; max_buy=0.0
     for _ in range(buy_n):
         w,sp,rt=bonus(); buy+=w; max_buy=max(max_buy,w); buy_spins+=sp; buy_retr+=rt
