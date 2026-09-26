@@ -1,4 +1,7 @@
-"""Generate publish-ready Derby Dash math."""
+"""Generate publish-ready Derby Dash math.
+
+Frozen candidate: Final Stretch mean 1.832x, 5000x cap, target RTP 96%.
+"""
 from gamestate import GameState
 from game_config import GameConfig
 from game_optimization import OptimizationSetup
