@@ -1,6 +1,7 @@
 """Generate publish-ready Derby Dash math.
 
 Frozen candidate: Final Stretch mean 1.832x, 5000x cap, target RTP 96%.
+Diagnostic rerun: surface Rust optimizer stderr on failure.
 """
 from gamestate import GameState
 from game_config import GameConfig
