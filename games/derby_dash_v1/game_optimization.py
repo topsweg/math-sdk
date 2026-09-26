@@ -7,8 +7,8 @@ class OptimizationSetup:
         self.game_config.opt_params={
             "base":{
                 "conditions":{
-                    "freegame":ConstructConditions(rtp=0.342,hr=280).return_dict(),
-                    "basegame":ConstructConditions(rtp=0.618,hr="x",av_win=0.620214337).return_dict(),
+                    "freegame":ConstructConditions(rtp=0.342,hr=280,search_conditions={"distribution":"freegame"}).return_dict(),
+                    "basegame":ConstructConditions(rtp=0.618,hr="x",av_win=0.620214337,search_conditions={"distribution":"basegame"}).return_dict(),
                 },
                 "scaling":{},
                 "parameters":ConstructParameters(num_show=5000,num_per_fence=10000,min_m2m=4,max_m2m=8,pmb_rtp=1.0,sim_trials=5000,test_spins=[50,100,200],test_weights=[0.3,0.4,0.3],score_type="rtp").return_dict(),
