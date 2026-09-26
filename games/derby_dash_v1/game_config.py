@@ -31,7 +31,11 @@ class GameConfig(Config):
         self.scatter_raw_pay={3:8.788,4:35.152,5:109.902}
         self.starting_free_spins=10
         self.retrigger_free_spins=5
-        self.final_stretch=((2,.40),(3,.30),(5,.20),(10,.08),(25,.02))\n        self.perfect_pick_bonus=0.10
+        # Final Stretch v2: multiplier applies to the accumulated free-spin purse.
+        # Mean = 1.85x, tuned from the validated free-spin purse mean (~52x)
+        # to preserve an approximately 96x feature before full production validation.
+        self.final_stretch=((1,.50),(2,.30),(3,.15),(5,.04),(10,.01))
+        self.perfect_pick_bonus=0.10
 
         # SDK symbol registration. Exact ways payouts are evaluated in Derby Dash GameState.
         self.paytable={(3,"G"):0.5273,(4,"G"):1.3182,(5,"G"):3.7355,(3,"SIL"):0.4394,(4,"SIL"):1.0990,(5,"SIL"):2.8567,(3,"TH"):0.3515,(4,"TH"):0.8788,(5,"TH"):2.2849,(3,"RF"):0.3081,(4,"RF"):0.7475,(5,"RF"):1.8455,(3,"A"):0.1980,(4,"A"):0.4394,(5,"A"):1.0546,(3,"K"):0.1758,(4,"K"):0.3960,(5,"K"):0.8788,(3,"Q"):0.1535,(4,"Q"):0.3515,(5,"Q"):0.7909,(3,"J"):0.1323,(4,"J"):0.3081,(5,"J"):0.6596}
