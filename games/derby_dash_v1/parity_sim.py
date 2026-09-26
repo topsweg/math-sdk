@@ -45,8 +45,18 @@ def main(base_n=3_000_000,buy_n=300_000,seed=350035):
         w,sp,rt=bonus(); buy+=w; max_buy=max(max_buy,w); buy_spins+=sp; buy_retr+=rt
     print("DERBY DASH FINAL STRETCH v2 PARITY")
     print(f"paid_rounds={base_n:,} bonus_buys={buy_n:,}")
-    print(f"paid_rtp={paid/base_n:.6%}"); print(f"base_rtp={base/base_n:.6%}")
+    raw_paid_rtp=paid/base_n
+    base_rtp=base/base_n
+    observed_feature_rate=triggers/base_n
+    avg_feature=feature/triggers if triggers else 0.0
+    analytical_feature_rate=1/280
+    normalized_feature_rtp=avg_feature*analytical_feature_rate
+    normalized_paid_rtp=base_rtp+normalized_feature_rtp
+    print(f"paid_rtp={raw_paid_rtp:.6%}"); print(f"base_rtp={base_rtp:.6%}")
     print(f"natural_feature_rtp={feature/base_n:.6%}"); print(f"hit_rate={hits/base_n:.6%}")
+    print(f"trigger_normalized_feature_rtp={normalized_feature_rtp:.6%}")
+    print(f"trigger_normalized_paid_rtp={normalized_paid_rtp:.6%}")
+    print(f"analytical_feature_rate={analytical_feature_rate:.9%} (1 in 280.00)")
     print(f"natural_feature_rate={triggers/base_n:.6%} (1 in {base_n/triggers:.2f})")
     print(f"reel5_tease={teases/base_n:.6%} (1 in {base_n/teases:.2f})")
     print(f"avg_natural_feature={feature/triggers:.6f}x")
